@@ -65,7 +65,32 @@ const FAVOURITES_KEY = 'brownie_bliss_favourites';
 
 let favourites = loadFavourites();
 
-// FIXED LOAD PRODUCTS
+function buildCatalogFromList(list) {
+    if (list && Array.isArray(list) && list.length) {
+        products = list.filter(p => p.type === 'standard').map(p => ({
+            id: p.id_ref,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            emoji: p.emoji,
+            img: p.img,
+            description: p.description || ''
+        }));
+
+        bdayCakes = {};
+        const bd = list.filter(p => p.type === 'birthday');
+        bd.forEach(p => {
+            bdayCakes[p.id_ref] = {
+                price: p.price,
+                emoji: p.emoji,
+                img: p.img
+            };
+        });
+    } else {
+        useFallbackProducts();
+    }
+}
+
 async function loadProducts() {
     try {
         const res = await fetch(`${API_BASE}/products`);
@@ -605,9 +630,7 @@ function sendWhatsAppFinal(orderId, itemsSnap, orderTotal) {
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
 
     const itemLines = lines.map(i => {
-
         let line = `• ${i.name} × ${i.qty} = ₹${(Number(i.price) * Number(i.qty)).toLocaleString('en-IN')}`;
-
         if (i.customizations) {
             const c = i.customizations;
             const details = [];
