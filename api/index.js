@@ -903,6 +903,7 @@ app.use((err, req, res, next) => {
 });
 
 // ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
+// ─── STARTUP FUNCTION ──────────────────────────────────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
