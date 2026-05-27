@@ -176,6 +176,16 @@ function toggleBirthdayFavourite() {
 function renderFavouritesPage() {
   const bakeryGrid = document.getElementById('favouriteBakeriesGrid');
   const dishesGrid = document.getElementById('favouriteDishesGrid');
+  const emptyState = document.getElementById('favouritesEmpty');
+
+  const hasBakeries = favouriteItems.bakeries?.length > 0;
+  const hasDishes = favouriteItems.dishes?.length > 0;
+
+  const hasAnyFavourites = hasBakeries || hasDishes;
+
+  if (emptyState) {
+    emptyState.style.display = hasAnyFavourites ? 'none' : 'block';
+  }
   if (!bakeryGrid && !dishesGrid) return;
 
   if (bakeryGrid) {
@@ -693,7 +703,7 @@ function filterProducts(category = 'all', btn = null) {
 
   grid.innerHTML = filtered
     .map(
-    (p) => `
+      (p) => `
   <div class="product-card">
 
     <div class="product-img-wrap">
